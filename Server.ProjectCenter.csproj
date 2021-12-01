@@ -4,6 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>ecb6f0b4-4d86-4c32-841a-28c3c94303f4</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssemblyName>AlgorithmEasy.Server.ProjectCenter</AssemblyName>
+    <RootNamespace>AlgorithmEasy.Server.ProjectCenter</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
