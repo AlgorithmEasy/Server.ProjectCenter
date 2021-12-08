@@ -5,11 +5,11 @@ using AlgorithmEasy.Shared.Models;
 
 namespace AlgorithmEasy.Server.ProjectCenter.Services
 {
-    public class ProjectManagerService
+    public class ProjectManageService
     {
         private readonly AlgorithmEasyDbContext _dbContext;
 
-        public ProjectManagerService(AlgorithmEasyDbContext dbContext) => _dbContext = dbContext;
+        public ProjectManageService(AlgorithmEasyDbContext dbContext) => _dbContext = dbContext;
 
         public IEnumerable<Project> GetPersonalProjects(string userId)
         {

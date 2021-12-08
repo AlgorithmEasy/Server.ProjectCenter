@@ -72,7 +72,7 @@ namespace AlgorithmEasy.Server.ProjectCenter
             var version = ServerVersion.AutoDetect(connection);
             services.AddDbContext<AlgorithmEasyDbContext>(options => options.UseMySql(connection!, version));
 
-            services.AddScoped<ProjectManagerService>();
+            services.AddScoped<ProjectManageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
