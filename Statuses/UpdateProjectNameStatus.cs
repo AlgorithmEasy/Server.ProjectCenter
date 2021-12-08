@@ -1,4 +1,4 @@
-﻿namespace AlgorithmEasy.Server.ProjectCenter.Status
+﻿namespace AlgorithmEasy.Server.ProjectCenter.Statuses
 {
     public enum UpdateProjectNameStatus
     {

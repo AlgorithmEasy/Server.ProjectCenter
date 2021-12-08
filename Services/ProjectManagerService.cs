@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using AlgorithmEasy.Server.ProjectCenter.Status;
+using AlgorithmEasy.Server.ProjectCenter.Statuses;
 using AlgorithmEasy.Shared.Models;
 
 namespace AlgorithmEasy.Server.ProjectCenter.Services

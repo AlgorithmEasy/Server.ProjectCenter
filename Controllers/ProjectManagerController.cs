@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using AlgorithmEasy.Server.ProjectCenter.Services;
-using AlgorithmEasy.Server.ProjectCenter.Status;
+using AlgorithmEasy.Server.ProjectCenter.Statuses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
