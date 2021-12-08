@@ -14,15 +14,15 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
     {
         private readonly ProjectManagerService _projectManager;
 
+        private string UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         public ProjectManagerController(ProjectManagerService projectManager) => _projectManager = projectManager;
 
         [HttpPost]
         public ActionResult CreateProject([Required] string projectName)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.ToString();
-            if (userId == null)
-                return new UnauthorizedResult();
-            if (_projectManager.CreateProject(userId, projectName))
+            if (UserId == null)
+                return Unauthorized();
+            if (_projectManager.CreateProject(UserId, projectName))
                 return Ok($"{projectName}项目创建成功。");
             return BadRequest($"{projectName}项目创建失败，请稍后重试。");
         }
@@ -30,10 +30,9 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpPut]
         public ActionResult UpdateWorkspace([Required] string projectName, [FromForm] string workspace)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.ToString();
-            if (userId == null)
-                return new UnauthorizedResult();
-            if (_projectManager.UpdateWorkspace(userId, projectName, workspace))
+            if (UserId == null)
+                return Unauthorized();
+            if (_projectManager.UpdateWorkspace(UserId, projectName, workspace))
                 return Ok($"{projectName}项目保存成功。");
             return BadRequest($"找不到{projectName}项目，请稍后重试。");
         }
@@ -41,10 +40,9 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpPut]
         public ActionResult UpdateProjectName([Required] string oldName, [Required] string newName)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.ToString();
-            if (userId == null)
-                return new UnauthorizedResult();
-            switch (_projectManager.UpdateProjectName(userId, oldName, newName))
+            if (UserId == null)
+                return Unauthorized();
+            switch (_projectManager.UpdateProjectName(UserId, oldName, newName))
             {
                 case UpdateProjectNameStatus.NoOldProject:
                     return BadRequest($"找不到{oldName}项目，请刷新后重试。");
@@ -58,10 +56,9 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpDelete]
         public ActionResult DeleteProject([Required] string projectName)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.ToString();
-            if (userId == null)
-                return new UnauthorizedResult();
-            if (_projectManager.DeleteProject(userId, projectName))
+            if (UserId == null)
+                return Unauthorized();
+            if (_projectManager.DeleteProject(UserId, projectName))
                 return Ok($"{projectName}项目删除成功。");
             return BadRequest($"{projectName}项目删除失败，请稍后重试。");
         }
