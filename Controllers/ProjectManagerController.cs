@@ -17,6 +17,14 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         public ProjectManagerController(ProjectManagerService projectManager) => _projectManager = projectManager;
 
+        [HttpGet]
+        public ActionResult GetPersonalProjects()
+        {
+            if (UserId == null)
+                return Unauthorized();
+            return Ok(_projectManager.GetPersonalProjects(UserId));
+        }
+
         [HttpPost]
         public ActionResult CreateProject([Required] string projectName)
         {

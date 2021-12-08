@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AlgorithmEasy.Server.ProjectCenter.Statuses;
 using AlgorithmEasy.Shared.Models;
 
@@ -9,6 +10,12 @@ namespace AlgorithmEasy.Server.ProjectCenter.Services
         private readonly AlgorithmEasyDbContext _dbContext;
 
         public ProjectManagerService(AlgorithmEasyDbContext dbContext) => _dbContext = dbContext;
+
+        public IEnumerable<Project> GetPersonalProjects(string userId)
+        {
+            return _dbContext.Projects.Where(project => project.UserId == userId).ToList();
+        }
+
         public bool CreateProject(string userId, string projectName)
         {
             if (_dbContext.Projects.Any(p => p.UserId == userId && p.ProjectName == projectName))
