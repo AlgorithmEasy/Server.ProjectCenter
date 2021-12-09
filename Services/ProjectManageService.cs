@@ -34,7 +34,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Services
             return true;
         }
 
-        public bool UpdateWorkspace(string userId, string projectName, string workspace)
+        public bool SaveProject(string userId, string projectName, string workspace)
         {
             var project = _dbContext.Projects.SingleOrDefault(p =>
                 p.UserId == userId && p.ProjectName == projectName);
@@ -47,7 +47,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Services
             return true;
         }
 
-        public UpdateProjectNameStatus UpdateProjectName(string userId, string oldName, string newName)
+        public UpdateProjectNameStatus RenameProject(string userId, string oldName, string newName)
         {
             var project = _dbContext.Projects.SingleOrDefault(p =>
                 p.UserId == userId && p.ProjectName == oldName);

@@ -41,21 +41,21 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateWorkspace([Required] string projectName, [FromForm] string workspace)
+        public ActionResult<string> SaveProject([Required] string projectName, [FromForm] string workspace)
         {
             if (UserId == null)
                 return Unauthorized();
-            if (_projectManage.UpdateWorkspace(UserId, projectName, workspace))
+            if (_projectManage.SaveProject(UserId, projectName, workspace))
                 return Ok($"{projectName}项目保存成功。");
             return BadRequest($"找不到{projectName}项目，请稍后重试。");
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateProjectName([Required] string oldName, [Required] string newName)
+        public ActionResult<string> RenameProject([Required] string oldName, [Required] string newName)
         {
             if (UserId == null)
                 return Unauthorized();
-            switch (_projectManage.UpdateProjectName(UserId, oldName, newName))
+            switch (_projectManage.RenameProject(UserId, oldName, newName))
             {
                 case UpdateProjectNameStatus.NoOldProject:
                     return BadRequest($"找不到{oldName}项目，请刷新后重试。");
