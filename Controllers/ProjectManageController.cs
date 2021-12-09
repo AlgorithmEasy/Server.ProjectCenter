@@ -26,7 +26,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject([Required] string projectName)
+        public ActionResult<string> CreateProject([Required] string projectName)
         {
             if (UserId == null)
                 return Unauthorized();
@@ -36,7 +36,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPut]
-        public ActionResult UpdateWorkspace([Required] string projectName, [FromForm] string workspace)
+        public ActionResult<string> UpdateWorkspace([Required] string projectName, [FromForm] string workspace)
         {
             if (UserId == null)
                 return Unauthorized();
@@ -46,7 +46,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPut]
-        public ActionResult UpdateProjectName([Required] string oldName, [Required] string newName)
+        public ActionResult<string> UpdateProjectName([Required] string oldName, [Required] string newName)
         {
             if (UserId == null)
                 return Unauthorized();
@@ -62,7 +62,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpDelete]
-        public ActionResult DeleteProject([Required] string projectName)
+        public ActionResult<string> DeleteProject([Required] string projectName)
         {
             if (UserId == null)
                 return Unauthorized();
