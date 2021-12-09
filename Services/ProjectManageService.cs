@@ -13,7 +13,10 @@ namespace AlgorithmEasy.Server.ProjectCenter.Services
 
         public IEnumerable<Project> GetPersonalProjects(string userId)
         {
-            return _dbContext.Projects.Where(project => project.UserId == userId).ToList();
+            return _dbContext.Projects
+                .Where(project => project.UserId == userId)
+                .OrderByDescending(project => project.UpdateTime)
+                .ToList();
         }
 
         public bool CreateProject(string userId, string projectName)
