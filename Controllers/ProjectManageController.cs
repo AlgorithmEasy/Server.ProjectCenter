@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using AlgorithmEasy.Server.ProjectCenter.Services;
 using AlgorithmEasy.Server.ProjectCenter.Statuses;
+using AlgorithmEasy.Shared.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +19,15 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         public ProjectManageController(ProjectManageService projectManage) => _projectManage = projectManage;
 
         [HttpGet]
-        public ActionResult GetPersonalProjects()
+        public ActionResult<GetPersonalProjectsResponse> GetPersonalProjects()
         {
             if (UserId == null)
                 return Unauthorized();
-            return Ok(_projectManage.GetPersonalProjects(UserId));
+            var response = new GetPersonalProjectsResponse
+            {
+                Projects = _projectManage.GetPersonalProjects(UserId)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
