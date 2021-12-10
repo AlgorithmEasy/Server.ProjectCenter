@@ -42,25 +42,24 @@ namespace AlgorithmEasy.Server.ProjectCenter.Services
                 return false;
 
             project.Workspace = workspace;
-            _dbContext.Projects.Update(project);
             _dbContext.SaveChanges();
             return true;
         }
 
-        public UpdateProjectNameStatus RenameProject(string userId, string oldName, string newName)
+        public UpdateProjectNameStatus RenameProject(string userId, string oldProjectName, string newProjectName)
         {
             var project = _dbContext.Projects.SingleOrDefault(p =>
-                p.UserId == userId && p.ProjectName == oldName);
+                p.UserId == userId && p.ProjectName == oldProjectName);
             if (project == null)
                 return UpdateProjectNameStatus.NoOldProject;
 
-            if (_dbContext.Projects.Any(p => p.UserId == userId && p.ProjectName == newName))
+            if (_dbContext.Projects.Any(p => p.UserId == userId && p.ProjectName == newProjectName))
                 return UpdateProjectNameStatus.ConflictNewName;
 
             var newProject = new Project
             {
                 UserId = project.UserId,
-                ProjectName = newName,
+                ProjectName = newProjectName,
                 Workspace = project.Workspace,
             };
             _dbContext.Projects.Remove(project);
