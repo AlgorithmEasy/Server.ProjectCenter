@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using AlgorithmEasy.Server.ProjectCenter.Services;
 using AlgorithmEasy.Server.ProjectCenter.Statuses;
+using AlgorithmEasy.Shared.Requests;
 using AlgorithmEasy.Shared.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,17 +32,17 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> CreateProject([Required] string projectName)
+        public ActionResult<string> CreateProject([Required][FromBody] CreateProjectRequest request)
         {
             if (UserId == null)
                 return Unauthorized();
-            if (_projectManage.CreateProject(UserId, projectName))
-                return Ok($"{projectName}项目创建成功。");
-            return BadRequest($"{projectName}项目创建失败，请稍后重试。");
+            if (_projectManage.CreateProject(UserId, request.ProjectName))
+                return Ok($"{request.ProjectName}项目创建成功。");
+            return BadRequest($"{request.ProjectName}项目创建失败，请稍后重试。");
         }
 
         [HttpPut]
-        public ActionResult<string> SaveProject([Required] string projectName, [FromForm] string workspace)
+        public ActionResult<string> SaveProject([Required] string projectName, [FromBody] string workspace)
         {
             if (UserId == null)
                 return Unauthorized();
@@ -51,18 +52,18 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPut]
-        public ActionResult<string> RenameProject([Required] string oldName, [Required] string newName)
+        public ActionResult<string> RenameProject([Required][FromBody] RenameProjectRequest request)
         {
             if (UserId == null)
                 return Unauthorized();
-            switch (_projectManage.RenameProject(UserId, oldName, newName))
+            switch (_projectManage.RenameProject(UserId, request.OldProjectName, request.NewProjectName))
             {
                 case UpdateProjectNameStatus.NoOldProject:
-                    return BadRequest($"找不到{oldName}项目，请刷新后重试。");
+                    return BadRequest($"找不到{request.OldProjectName}项目，请刷新后重试。");
                 case UpdateProjectNameStatus.ConflictNewName:
-                    return BadRequest($"{newName}与已有项目冲突，请重新命名后提交。");
+                    return BadRequest($"{request.NewProjectName}与已有项目冲突，请重新命名后提交。");
                 default:
-                    return Ok($"{oldName}项目成功更名为{newName}项目。");
+                    return Ok($"{request.OldProjectName}项目成功更名为{request.NewProjectName}项目。");
             }
         }
 
