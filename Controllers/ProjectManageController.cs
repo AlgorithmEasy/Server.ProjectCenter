@@ -14,10 +14,10 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
     [Authorize(Roles = "Student")]
     public class ProjectManageController : ControllerBase
     {
-        private readonly ProjectManageService _projectManage;
+        private readonly ProjectManageService _projectManager;
 
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        public ProjectManageController(ProjectManageService projectManage) => _projectManage = projectManage;
+        public ProjectManageController(ProjectManageService projectManager) => _projectManager = projectManager;
 
         [HttpGet]
         public ActionResult<GetPersonalProjectsResponse> GetPersonalProjects()
@@ -26,7 +26,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
                 return Unauthorized();
             var response = new GetPersonalProjectsResponse
             {
-                Projects = _projectManage.GetPersonalProjects(UserId)
+                Projects = _projectManager.GetPersonalProjects(UserId)
             };
             return Ok(response);
         }
@@ -36,7 +36,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         {
             if (UserId == null)
                 return Unauthorized();
-            if (_projectManage.CreateProject(UserId, request.ProjectName))
+            if (_projectManager.CreateProject(UserId, request.ProjectName))
                 return Ok($"{request.ProjectName}项目创建成功。");
             return BadRequest($"{request.ProjectName}项目创建失败，请稍后重试。");
         }
@@ -46,7 +46,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         {
             if (UserId == null)
                 return Unauthorized();
-            if (_projectManage.SaveProject(UserId, projectName, workspace))
+            if (_projectManager.SaveProject(UserId, projectName, workspace))
                 return Ok($"{projectName}项目保存成功。");
             return BadRequest($"找不到{projectName}项目，请稍后重试。");
         }
@@ -56,7 +56,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         {
             if (UserId == null)
                 return Unauthorized();
-            switch (_projectManage.RenameProject(UserId, request.OldProjectName, request.NewProjectName))
+            switch (_projectManager.RenameProject(UserId, request.OldProjectName, request.NewProjectName))
             {
                 case UpdateProjectNameStatus.NoOldProject:
                     return BadRequest($"找不到{request.OldProjectName}项目，请刷新后重试。");
@@ -72,7 +72,7 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         {
             if (UserId == null)
                 return Unauthorized();
-            if (_projectManage.DeleteProject(UserId, projectName))
+            if (_projectManager.DeleteProject(UserId, projectName))
                 return Ok($"{projectName}项目删除成功。");
             return BadRequest($"{projectName}项目删除失败，请稍后重试。");
         }
