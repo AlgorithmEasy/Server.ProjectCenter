@@ -22,8 +22,6 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpGet]
         public ActionResult<GetPersonalProjectsResponse> GetPersonalProjects()
         {
-            if (UserId == null)
-                return Unauthorized();
             var response = new GetPersonalProjectsResponse
             {
                 Projects = _projectManager.GetPersonalProjects(UserId)
@@ -34,8 +32,6 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpPost]
         public ActionResult<string> CreateProject([Required][FromBody] CreateProjectRequest request)
         {
-            if (UserId == null)
-                return Unauthorized();
             if (_projectManager.CreateProject(UserId, request.ProjectName))
                 return Ok($"{request.ProjectName}项目创建成功。");
             return BadRequest($"{request.ProjectName}项目创建失败，请稍后重试。");
@@ -44,8 +40,6 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpPut]
         public ActionResult<string> SaveProject([Required] string projectName, [FromBody] string workspace)
         {
-            if (UserId == null)
-                return Unauthorized();
             if (_projectManager.SaveProject(UserId, projectName, workspace))
                 return Ok($"{projectName}项目保存成功。");
             return BadRequest($"找不到{projectName}项目，请稍后重试。");
@@ -54,8 +48,6 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpPut]
         public ActionResult<string> RenameProject([Required][FromBody] RenameProjectRequest request)
         {
-            if (UserId == null)
-                return Unauthorized();
             switch (_projectManager.RenameProject(UserId, request.OldProjectName, request.NewProjectName))
             {
                 case UpdateProjectNameStatus.NoOldProject:
@@ -70,8 +62,6 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         [HttpDelete]
         public ActionResult<string> DeleteProject([Required] string projectName)
         {
-            if (UserId == null)
-                return Unauthorized();
             if (_projectManager.DeleteProject(UserId, projectName))
                 return Ok($"{projectName}项目删除成功。");
             return BadRequest($"{projectName}项目删除失败，请稍后重试。");
