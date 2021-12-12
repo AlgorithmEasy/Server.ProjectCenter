@@ -7,10 +7,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Server.ProjectCenter/Server.ProjectCenter.csproj", "Server.ProjectCenter/"]
-RUN dotnet restore "Server.ProjectCenter/Server.ProjectCenter.csproj"
+COPY ["Server.ProjectCenter.csproj", "."]
+RUN --mount=type=secret,id=package_token \
+    TOKEN=`cat /run/secrets/package_token` && \
+    dotnet nuget add source --username AlgorithmEasy --password $TOKEN --store-password-in-clear-text --name github "https://nuget.pkg.github.com/AlgorithmEasy/index.json"
+RUN dotnet restore "Server.ProjectCenter.csproj" /p:Configuration="Release"
 COPY . .
-WORKDIR "/src/Server.ProjectCenter"
 RUN dotnet build "Server.ProjectCenter.csproj" -c Release -o /app/build
 
 FROM build AS publish

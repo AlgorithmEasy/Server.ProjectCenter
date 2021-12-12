@@ -1,0 +1,36 @@
+name: Publish Server.ProjectCenter
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.GITHUB_SHA }}
+
+      - name: Setup Version
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Server.ProjectCenter
+        uses: docker/build-push-action@v2
+        with:
+          tags: ghcr.io/algorithmeasy/server-project-center:${{ env.VERSION }}, ghcr.io/algorithmeasy/server-project-center:latest
+          push: true
+          secrets: |
+            "package_token=${{ secrets.ALGORITHM_EASY_PACKAGE }}"
