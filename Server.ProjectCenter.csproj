@@ -6,6 +6,9 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyName>AlgorithmEasy.Server.ProjectCenter</AssemblyName>
     <RootNamespace>AlgorithmEasy.Server.ProjectCenter</RootNamespace>
+    <Authors>WzyAndHisFriends</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/AlgorithmEasy/Server.ProjectCenter</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
