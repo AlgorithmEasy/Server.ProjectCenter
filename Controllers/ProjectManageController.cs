@@ -38,11 +38,11 @@ namespace AlgorithmEasy.Server.ProjectCenter.Controllers
         }
 
         [HttpPut]
-        public ActionResult<string> SaveProject([Required] string projectName, [FromBody] string workspace)
+        public ActionResult<string> SaveProject([Required] [FromBody] SaveProjectRequest request)
         {
-            if (_projectManager.SaveProject(UserId, projectName, workspace))
-                return Ok($"{projectName}项目保存成功。");
-            return BadRequest($"找不到{projectName}项目，请稍后重试。");
+            if (_projectManager.SaveProject(UserId, request.ProjectName, request.Workspace))
+                return Ok($"{request.ProjectName}项目保存成功。");
+            return BadRequest($"找不到{request.ProjectName}项目，请稍后重试。");
         }
 
         [HttpPut]
